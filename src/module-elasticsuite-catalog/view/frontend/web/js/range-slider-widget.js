@@ -72,25 +72,32 @@ define(['jquery', 'Magento_Catalog/js/price-utils', 'mage/template', 'Magento_Ui
         },
 
         _refreshDisplay: function() {
+	        var $fromLabel = this.element.find(this.options.fromLabel),
+	        	$toLabel = this.element.find(this.options.toLabel),
+				$message = this.element.find(this.options.message),
+				$applyButton = this.element.find(this.options.applyButton);
+	        
             this.count = this._getItemCount();
 
-            if (this.element.find('[data-role=from-label]')) {
-                this.element.find('[data-role=from-label]').html(this._formatLabel(this.from));
+            if ($fromLabel) {
+                $fromLabel.html(this._formatLabel(this.from));
             }
 
-            if (this.element.find('[data-role=to-label]')) {
-                this.element.find('[data-role=to-label]').html(this._formatLabel(this.to - this.options.maxLabelOffset));
+            if ($toLabel) {
+                $toLabel.html(this._formatLabel(this.to - this.options.maxLabelOffset));
             }
 
-            if (this.element.find('[data-role=message-box]')) {
+            if ($message) {
                 var messageTemplate = this.options.messageTemplates[this.count > 0 ? (this.count > 1 ? 'displayCount' : 'displayOne' ) : 'displayEmpty'];
                 var message = mageTemplate(messageTemplate)(this);
-                this.element.find('[data-role=message-box]').html(message);
+                $message.html(message);
 
                 if (this.count > 0) {
-                    this.element.find('[data-role=message-box]').removeClass('empty');
+                    $message.removeClass('empty');
+                    $applyButton.removeClass('disabled');
                 } else {
-                    this.element.find('[data-role=message-box]').addClass('empty');
+                    $message.addClass('empty');
+                    $applyButton.addClass('disabled');
                 }
 
             }
